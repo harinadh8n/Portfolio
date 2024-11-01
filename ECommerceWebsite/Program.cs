@@ -1,3 +1,6 @@
+using ECommerceDbContext.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace ECommerceWebsite
 {
     public class Program
@@ -6,29 +9,19 @@ namespace ECommerceWebsite
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Configure database connection
+            builder.Services.AddDbContext<ECommerceContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews(); // Or other services as needed
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
+            // Configure middleware and routing
             app.UseRouting();
-
             app.UseAuthorization();
-
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.MapControllers(); // Or MapRazorPages(), etc.
 
             app.Run();
         }
