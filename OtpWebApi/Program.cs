@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using OtpWebApi.Models;
 
 namespace OtpWebApi
 {
@@ -9,6 +10,8 @@ namespace OtpWebApi
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            TwilioSettings.Initialize(builder.Configuration);
 
             // Add services to the container.
             builder.Services.AddCors(options =>
